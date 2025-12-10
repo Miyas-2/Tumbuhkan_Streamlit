@@ -7,13 +7,14 @@ MQTT_BROKER = "broker.hivemq.com"
 MQTT_PORT = 1883
 MQTT_TOPIC_SENSOR = "part-iot/sensor/data"
 MQTT_TOPIC_OUTPUT = "part-iot/output"
-MQTT_TOPIC_ACTUATOR = "part-iot/actuator/status"  # NEW
+MQTT_TOPIC_ACTUATOR = "part-iot/actuator/status"
+MQTT_TOPIC_ACTUATOR_CONTROL = "part-iot/actuator/control"  # NEW: Topic untuk kontrol manual
 
 # File Paths
 MODEL_PATH = "../model/hydroponic_multioutput_rf_model.pkl"
 LOG_FILE = "prediction_log.csv"
 LATEST_JSON = "latest_prediction.json"
-LATEST_ACTUATOR_JSON = "latest_actuator.json"  # NEW
+LATEST_ACTUATOR_JSON = "latest_actuator.json"
 FLAG_FILE = "mqtt_running.flag"
 
 # Logging Configuration
@@ -54,3 +55,12 @@ ACTUATOR_NAMES = {
     'fan': '🌀 Cooling Fan',
     'led': '💡 Grow Light LED'
 }
+
+ACTUATOR_KEYS = [
+    'pump_nutrition_AB',
+    'pump_water', 
+    'pump_Ph_Up',
+    'pump_Ph_Down',
+    'fan',
+    'led'
+]

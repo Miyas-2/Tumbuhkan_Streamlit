@@ -1,0 +1,35 @@
+timestamp,ph,tds,water_flow,air_humidity,air_temperature,ldr_value,water_temperature,water_level,ph_label,tds_label,ambient_label,light_label,status
+2025-12-10 15:01:32,6.0,955.0,9.78,55.56,26.48,2437.0,22.62,12.74,Normal,Low,Ideal,Normal,Warning
+2025-12-10 15:01:36,7.03,1000.0,9.89,40.67,23.46,833.0,23.42,14.19,High,Low,Ideal,Normal,Warning
+2025-12-10 15:01:44,7.38,1911.0,10.27,69.45,22.77,831.0,23.2,11.77,Too High,High,Ideal,Normal,Critical
+2025-12-10 15:01:54,6.94,1830.0,11.2,61.8,27.95,2813.0,25.4,14.56,High,High,Ideal,Too Bright,Warning
+2025-12-10 15:01:59,7.28,1014.0,10.69,43.64,24.19,2172.0,24.2,11.98,Too High,Low,Ideal,Normal,Critical
+2025-12-10 15:02:09,7.32,1502.0,10.4,59.4,20.42,961.0,24.77,10.55,Too High,Normal,Ideal,Normal,Critical
+2025-12-10 15:02:14,7.2,1116.0,11.74,47.46,24.82,2346.0,25.46,12.23,High,Normal,Ideal,Normal,Warning
+2025-12-10 15:02:24,5.7,1770.0,11.56,45.4,20.19,1204.0,23.87,10.99,Low,High,Ideal,Normal,Warning
+2025-12-10 15:02:29,7.13,1253.0,9.61,57.9,24.25,695.0,25.24,13.38,High,Normal,Ideal,Normal,Warning
+2025-12-10 15:02:39,6.12,1293.0,7.71,64.71,26.06,1905.0,24.93,10.72,Normal,Normal,Ideal,Normal,Optimal
+2025-12-10 15:02:49,7.11,1702.0,11.48,51.1,26.7,1489.0,23.68,10.0,High,High,Ideal,Normal,Warning
+2025-12-10 15:02:59,6.46,1717.0,10.54,49.44,21.34,2347.0,24.25,12.82,Normal,High,Ideal,Normal,Warning
+2025-12-10 15:03:04,6.36,1819.0,8.82,61.17,23.85,2470.0,25.76,10.74,Normal,High,Ideal,Normal,Warning
+2025-12-10 15:03:14,7.08,920.0,8.78,41.08,24.77,760.0,23.96,13.89,High,Low,Ideal,Normal,Warning
+2025-12-10 15:03:19,6.88,1287.0,7.32,58.48,20.54,2458.0,23.21,12.4,High,Normal,Ideal,Normal,Warning
+2025-12-10 15:03:29,6.69,1449.0,10.91,66.35,24.64,837.0,23.24,14.44,Normal,Normal,Ideal,Normal,Optimal
+2025-12-10 15:03:34,6.76,874.0,11.73,49.64,27.6,629.0,23.99,13.45,Normal,Low,Ideal,Normal,Warning
+2025-12-10 15:03:44,6.02,1347.0,9.82,40.63,27.96,2700.0,25.21,13.59,Normal,Normal,Ideal,Too Bright,Warning
+2025-12-10 15:03:49,6.63,1367.0,10.54,67.87,23.78,963.0,24.32,11.3,Normal,Normal,Ideal,Normal,Optimal
+2025-12-10 15:03:59,6.3,1046.0,11.38,62.97,22.93,2034.0,24.71,12.93,Normal,Low,Ideal,Normal,Warning
+2025-12-10 15:04:04,6.94,1073.0,10.37,57.91,22.41,1818.0,24.2,13.01,High,Low,Ideal,Normal,Warning
+2025-12-10 15:04:09,7.35,1826.0,9.05,63.45,26.34,1157.0,24.35,13.6,Too High,High,Ideal,Normal,Critical
+2025-12-10 15:04:19,5.93,918.0,10.94,40.19,24.02,2205.0,25.82,14.37,Low,Low,Ideal,Normal,Warning
+2025-12-10 15:04:29,7.07,1189.0,10.12,58.16,24.11,1134.0,25.56,10.49,High,Normal,Ideal,Normal,Warning
+2025-12-10 15:04:39,6.12,1480.0,9.41,41.6,21.99,1731.0,22.1,10.3,Normal,Normal,Ideal,Normal,Optimal
+2025-12-10 15:04:44,5.82,1171.0,8.71,50.5,23.37,1150.0,24.56,12.95,Low,Normal,Ideal,Normal,Warning
+2025-12-10 15:04:49,6.04,1632.0,7.3,50.97,20.65,813.0,23.16,13.02,Normal,Normal,Ideal,Normal,Optimal
+2025-12-10 15:04:59,6.73,1075.0,8.33,58.23,21.3,2895.0,22.62,12.64,Normal,Normal,Ideal,Too Bright,Warning
+2025-12-10 15:05:04,6.7,1504.0,8.02,45.1,20.23,1458.0,23.25,10.7,Normal,Normal,Ideal,Normal,Optimal
+2025-12-10 15:05:14,6.63,1334.0,7.51,56.12,20.96,2787.0,23.28,10.39,Normal,Normal,Ideal,Too Bright,Warning
+2025-12-10 15:05:19,5.54,1802.0,11.84,63.98,22.96,1115.0,22.64,14.17,Low,High,Ideal,Normal,Warning
+2025-12-10 15:05:29,6.16,1481.0,7.22,51.71,23.62,1325.0,24.25,12.06,Normal,Normal,Ideal,Normal,Optimal
+2025-12-10 15:05:34,7.16,922.0,9.66,46.69,21.89,1035.0,23.69,12.66,High,Low,Ideal,Normal,Warning
+2025-12-10 15:05:44,6.81,1497.0,10.31,64.54,25.18,2162.0,24.0,12.31,Normal,Normal,Ideal,Normal,Optimal

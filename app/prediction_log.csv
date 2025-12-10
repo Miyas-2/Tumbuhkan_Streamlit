@@ -33,3 +33,11 @@ timestamp,ph,tds,water_flow,air_humidity,air_temperature,ldr_value,water_tempera
 2025-12-10 15:05:29,6.16,1481.0,7.22,51.71,23.62,1325.0,24.25,12.06,Normal,Normal,Ideal,Normal,Optimal
 2025-12-10 15:05:34,7.16,922.0,9.66,46.69,21.89,1035.0,23.69,12.66,High,Low,Ideal,Normal,Warning
 2025-12-10 15:05:44,6.81,1497.0,10.31,64.54,25.18,2162.0,24.0,12.31,Normal,Normal,Ideal,Normal,Optimal
+2025-12-10 15:05:54,6.82,1327.0,9.79,55.6,24.91,805.0,23.32,10.68,Normal,Normal,Ideal,Normal,Optimal
+2025-12-10 15:05:59,6.15,1144.0,7.16,49.89,27.35,692.0,23.53,13.01,Normal,Normal,Ideal,Normal,Optimal
+2025-12-10 15:06:04,5.82,1150.0,7.72,40.25,27.09,1966.0,22.18,11.27,Low,Normal,Ideal,Normal,Warning
+2025-12-10 15:06:14,6.59,1429.0,9.77,41.65,21.54,1031.0,22.36,12.9,Normal,Normal,Ideal,Normal,Optimal
+2025-12-10 15:06:19,7.49,1983.0,10.74,58.29,21.49,1608.0,22.3,13.21,Too High,High,Ideal,Normal,Critical
+2025-12-10 15:06:29,6.01,1563.0,10.62,61.01,22.28,2187.0,22.49,11.76,Normal,Normal,Ideal,Normal,Optimal
+2025-12-10 15:06:34,7.27,1716.0,9.65,59.38,23.51,882.0,23.71,10.48,High,High,Ideal,Normal,Warning
+2025-12-10 15:06:44,7.4,1362.0,8.42,64.39,24.15,1084.0,23.91,10.96,Too High,Normal,Ideal,Normal,Critical

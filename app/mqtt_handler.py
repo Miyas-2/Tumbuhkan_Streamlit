@@ -4,6 +4,7 @@ MQTT handling untuk IoT Hydroponics Dashboard
 import os
 import json
 import time
+from turtle import st
 import paho.mqtt.client as mqtt
 from datetime import datetime
 from config import (MQTT_BROKER, MQTT_PORT, MQTT_TOPIC_SENSOR, MQTT_TOPIC_OUTPUT, 
@@ -146,9 +147,17 @@ def on_message(client, userdata, msg):
             "color": color
         }
         save_latest_prediction(data)
+        if st.session_state.get('auto_control_enabled', False):
+            from actuator_controller import apply_auto_control
+            try:
+                apply_auto_control(prediction_result)
+            except Exception as e:
+                print(f"⚠️ Auto control error: {e}")
 
     except Exception as e:
         print(f"✗ Error on_message: {e}")
+        
+        
 
 def on_disconnect(client, userdata, rc, properties=None):
     """Callback saat disconnect"""

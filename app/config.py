@@ -64,3 +64,4 @@ ACTUATOR_KEYS = [
     'fan',
     'led'
 ]
+

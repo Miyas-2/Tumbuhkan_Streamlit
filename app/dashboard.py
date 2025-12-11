@@ -72,7 +72,23 @@ def main():
     if 'mqtt_initialized' not in st.session_state:
         st.session_state.mqtt_initialized = False
     if 'control_mode' not in st.session_state:
-        st.session_state['control_mode'] = 'Monitor Only'  # Monitor, Manual, Auto
+        st.session_state['control_mode'] = 'Monitor Only'
+    if 'selected_mode' not in st.session_state:
+        st.session_state['selected_mode'] = 'Monitor Only'
+    
+    # Manual control states
+    if 'manual_nut' not in st.session_state:
+        st.session_state['manual_nut'] = False
+    if 'manual_water' not in st.session_state:
+        st.session_state['manual_water'] = False
+    if 'manual_ph_up' not in st.session_state:
+        st.session_state['manual_ph_up'] = False
+    if 'manual_ph_down' not in st.session_state:
+        st.session_state['manual_ph_down'] = False
+    if 'manual_fan' not in st.session_state:
+        st.session_state['manual_fan'] = False
+    if 'manual_led' not in st.session_state:
+        st.session_state['manual_led'] = False
 
     # Load Model
     model = load_model()
@@ -98,22 +114,38 @@ def main():
         
         # Control Mode Selection
         st.subheader("🎮 Control Mode")
-        control_mode = st.radio(
-            "Select Control Mode:",
+        
+        # Show current active mode
+        st.success(f"**Active Mode:** {st.session_state['control_mode']}")
+        
+        st.markdown("---")
+        
+        # Mode selector (doesn't change immediately)
+        selected_mode = st.radio(
+            "Select New Mode:",
             options=['Monitor Only', 'Manual Control', 'Auto Control'],
-            index=['Monitor Only', 'Manual Control', 'Auto Control'].index(st.session_state['control_mode'])
+            index=['Monitor Only', 'Manual Control', 'Auto Control'].index(st.session_state['selected_mode'])
         )
         
-        if control_mode != st.session_state['control_mode']:
-            st.session_state['control_mode'] = control_mode
-            st.rerun()
+        # Update selected mode in session state
+        st.session_state['selected_mode'] = selected_mode
         
-        if control_mode == 'Monitor Only':
+        # Show mode description
+        if selected_mode == 'Monitor Only':
             st.info("📊 View only - No control")
-        elif control_mode == 'Manual Control':
+        elif selected_mode == 'Manual Control':
             st.warning("🎮 Manual mode - You control actuators")
         else:
             st.success("🤖 Auto mode - ML controls actuators")
+        
+        # Apply button - only show if different from current mode
+        if selected_mode != st.session_state['control_mode']:
+            st.markdown("---")
+            if st.button("✅ APPLY MODE CHANGE", use_container_width=True, type="primary"):
+                st.session_state['control_mode'] = selected_mode
+                st.success(f"✅ Switched to: {selected_mode}")
+                time.sleep(1)
+                st.rerun()
         
         st.markdown("---")
         
@@ -285,7 +317,7 @@ def main():
         
         elif st.session_state['control_mode'] == 'Manual Control':
             st.subheader("🎮 MANUAL ACTUATOR CONTROL")
-            st.warning("⚠️ Set actuator states below, then click APPLY to send command")
+            st.warning("⚠️ Click buttons to toggle actuators ON/OFF")
             
             # Current Status
             if actuator_data:
@@ -298,71 +330,163 @@ def main():
             
             st.markdown("---")
             
-            # FORM
-            with st.form("manual_control_form"):
-                st.markdown("### Set Actuator States")
+            # Button Toggle Control
+            st.markdown("### 💧 Pumps")
+            col1, col2, col3, col4 = st.columns(4)
+            
+            with col1:
+                nut_state = st.session_state['manual_nut']
+                btn_type = "primary" if nut_state else "secondary"
+                btn_text = "🧪 Nutrition ✅" if nut_state else "🧪 Nutrition ⭕"
                 
-                col1, col2 = st.columns(2)
-                
-                with col1:
-                    st.markdown("**💧 Pumps:**")
-                    nut = st.checkbox("🧪 Nutrition Pump A+B", value=False)
-                    water = st.checkbox("💧 Water Pump", value=False)
-                    ph_up = st.checkbox("⬆️ pH Up Pump", value=False)
-                    ph_down = st.checkbox("⬇️ pH Down Pump", value=False)
-                
-                with col2:
-                    st.markdown("**⚡ Utilities:**")
-                    fan = st.checkbox("🌀 Cooling Fan", value=False)
-                    led = st.checkbox("💡 Grow Light LED", value=False)
-                
-                st.markdown("---")
-                
-                # Submit buttons
-                subcol1, subcol2, subcol3 = st.columns(3)
-                
-                with subcol1:
-                    submit = st.form_submit_button("✅ APPLY SETTINGS", type="primary", use_container_width=True)
-                with subcol2:
-                    all_on = st.form_submit_button("🟢 ALL ON", use_container_width=True)
-                with subcol3:
-                    all_off = st.form_submit_button("🔴 ALL OFF", use_container_width=True)
-                
-                # Handle submission
-                if submit:
+                if st.button(btn_text, key="btn_nut", type=btn_type, use_container_width=True):
+                    st.session_state['manual_nut'] = not nut_state
                     payload = {
-                        "pump_nutrition_AB": nut,
-                        "pump_water": water,
-                        "pump_Ph_Up": ph_up,
-                        "pump_Ph_Down": ph_down,
-                        "fan": fan,
-                        "led": led
+                        "pump_nutrition_AB": st.session_state['manual_nut'],
+                        "pump_water": st.session_state['manual_water'],
+                        "pump_Ph_Up": st.session_state['manual_ph_up'],
+                        "pump_Ph_Down": st.session_state['manual_ph_down'],
+                        "fan": st.session_state['manual_fan'],
+                        "led": st.session_state['manual_led']
                     }
-                    
-                    st.info(f"📤 Sending command...")
-                    
                     if publish_mqtt_simple(payload):
-                        st.success("✅ Command sent successfully!")
-                        time.sleep(1)
+                        st.success("✅ Sent!")
+                        time.sleep(0.5)
                         st.rerun()
-                    else:
-                        st.error("❌ Failed to send command!")
+            
+            with col2:
+                water_state = st.session_state['manual_water']
+                btn_type = "primary" if water_state else "secondary"
+                btn_text = "💧 Water ✅" if water_state else "💧 Water ⭕"
                 
-                if all_on:
+                if st.button(btn_text, key="btn_water", type=btn_type, use_container_width=True):
+                    st.session_state['manual_water'] = not water_state
+                    payload = {
+                        "pump_nutrition_AB": st.session_state['manual_nut'],
+                        "pump_water": st.session_state['manual_water'],
+                        "pump_Ph_Up": st.session_state['manual_ph_up'],
+                        "pump_Ph_Down": st.session_state['manual_ph_down'],
+                        "fan": st.session_state['manual_fan'],
+                        "led": st.session_state['manual_led']
+                    }
+                    if publish_mqtt_simple(payload):
+                        st.success("✅ Sent!")
+                        time.sleep(0.5)
+                        st.rerun()
+            
+            with col3:
+                ph_up_state = st.session_state['manual_ph_up']
+                btn_type = "primary" if ph_up_state else "secondary"
+                btn_text = "⬆️ pH Up ✅" if ph_up_state else "⬆️ pH Up ⭕"
+                
+                if st.button(btn_text, key="btn_ph_up", type=btn_type, use_container_width=True):
+                    st.session_state['manual_ph_up'] = not ph_up_state
+                    payload = {
+                        "pump_nutrition_AB": st.session_state['manual_nut'],
+                        "pump_water": st.session_state['manual_water'],
+                        "pump_Ph_Up": st.session_state['manual_ph_up'],
+                        "pump_Ph_Down": st.session_state['manual_ph_down'],
+                        "fan": st.session_state['manual_fan'],
+                        "led": st.session_state['manual_led']
+                    }
+                    if publish_mqtt_simple(payload):
+                        st.success("✅ Sent!")
+                        time.sleep(0.5)
+                        st.rerun()
+            
+            with col4:
+                ph_down_state = st.session_state['manual_ph_down']
+                btn_type = "primary" if ph_down_state else "secondary"
+                btn_text = "⬇️ pH Down ✅" if ph_down_state else "⬇️ pH Down ⭕"
+                
+                if st.button(btn_text, key="btn_ph_down", type=btn_type, use_container_width=True):
+                    st.session_state['manual_ph_down'] = not ph_down_state
+                    payload = {
+                        "pump_nutrition_AB": st.session_state['manual_nut'],
+                        "pump_water": st.session_state['manual_water'],
+                        "pump_Ph_Up": st.session_state['manual_ph_up'],
+                        "pump_Ph_Down": st.session_state['manual_ph_down'],
+                        "fan": st.session_state['manual_fan'],
+                        "led": st.session_state['manual_led']
+                    }
+                    if publish_mqtt_simple(payload):
+                        st.success("✅ Sent!")
+                        time.sleep(0.5)
+                        st.rerun()
+            
+            st.markdown("---")
+            st.markdown("### ⚡ Utilities")
+            col1, col2 = st.columns(2)
+            
+            with col1:
+                fan_state = st.session_state['manual_fan']
+                btn_type = "primary" if fan_state else "secondary"
+                btn_text = "🌀 Fan ✅" if fan_state else "🌀 Fan ⭕"
+                
+                if st.button(btn_text, key="btn_fan", type=btn_type, use_container_width=True):
+                    st.session_state['manual_fan'] = not fan_state
+                    payload = {
+                        "pump_nutrition_AB": st.session_state['manual_nut'],
+                        "pump_water": st.session_state['manual_water'],
+                        "pump_Ph_Up": st.session_state['manual_ph_up'],
+                        "pump_Ph_Down": st.session_state['manual_ph_down'],
+                        "fan": st.session_state['manual_fan'],
+                        "led": st.session_state['manual_led']
+                    }
+                    if publish_mqtt_simple(payload):
+                        st.success("✅ Sent!")
+                        time.sleep(0.5)
+                        st.rerun()
+            
+            with col2:
+                led_state = st.session_state['manual_led']
+                btn_type = "primary" if led_state else "secondary"
+                btn_text = "💡 LED ✅" if led_state else "💡 LED ⭕"
+                
+                if st.button(btn_text, key="btn_led", type=btn_type, use_container_width=True):
+                    st.session_state['manual_led'] = not led_state
+                    payload = {
+                        "pump_nutrition_AB": st.session_state['manual_nut'],
+                        "pump_water": st.session_state['manual_water'],
+                        "pump_Ph_Up": st.session_state['manual_ph_up'],
+                        "pump_Ph_Down": st.session_state['manual_ph_down'],
+                        "fan": st.session_state['manual_fan'],
+                        "led": st.session_state['manual_led']
+                    }
+                    if publish_mqtt_simple(payload):
+                        st.success("✅ Sent!")
+                        time.sleep(0.5)
+                        st.rerun()
+            
+            st.markdown("---")
+            st.markdown("### 🎯 Quick Actions")
+            col1, col2 = st.columns(2)
+            
+            with col1:
+                if st.button("🟢 ALL ON", use_container_width=True, type="primary"):
                     if turn_all_on():
-                        st.success("✅ All actuators turned ON!")
+                        st.session_state['manual_nut'] = True
+                        st.session_state['manual_water'] = True
+                        st.session_state['manual_ph_up'] = True
+                        st.session_state['manual_ph_down'] = True
+                        st.session_state['manual_fan'] = True
+                        st.session_state['manual_led'] = True
+                        st.success("✅ All ON!")
                         time.sleep(1)
                         st.rerun()
-                    else:
-                        st.error("❌ Failed!")
-                
-                if all_off:
+            
+            with col2:
+                if st.button("🔴 ALL OFF", use_container_width=True):
                     if turn_all_off():
-                        st.success("✅ All actuators turned OFF!")
+                        st.session_state['manual_nut'] = False
+                        st.session_state['manual_water'] = False
+                        st.session_state['manual_ph_up'] = False
+                        st.session_state['manual_ph_down'] = False
+                        st.session_state['manual_fan'] = False
+                        st.session_state['manual_led'] = False
+                        st.success("✅ All OFF!")
                         time.sleep(1)
                         st.rerun()
-                    else:
-                        st.error("❌ Failed!")
         
         else:  # Auto Control Mode
             st.subheader("🤖 AUTO CONTROL MODE")
@@ -477,11 +601,13 @@ def main():
                 with col2:
                     if st.button("⏸️ Switch to Manual Mode", use_container_width=True):
                         st.session_state['control_mode'] = 'Manual Control'
+                        st.session_state['selected_mode'] = 'Manual Control'
                         st.rerun()
             
             else:
                 st.warning("⏳ Waiting for sensor data...")
                 st.info("Auto control needs ML prediction data to work")
+    
     # ============================================================
     # TAB 3: DATA & ANALYSIS
     # ============================================================
@@ -506,6 +632,26 @@ def main():
                 water_chart = create_water_level_chart(df_log)
                 if water_chart:
                     st.plotly_chart(water_chart, use_container_width=True)
+
+            st.markdown("---")
+            
+            # NEW: Label Distribution Charts
+            st.subheader("📊 ML Prediction Label Distribution")
+            label_charts = create_label_distribution_charts(df_log)
+            if label_charts:
+                st.plotly_chart(label_charts, use_container_width=True)
+            else:
+                st.info("⏳ Not enough data for label distribution")
+            
+            st.markdown("---")
+            
+            # NEW: Correlation Heatmap
+            st.subheader("🔥 Sensor Data Correlation Matrix")
+            corr_chart = create_correlation_heatmap(df_log)
+            if corr_chart:
+                st.plotly_chart(corr_chart, use_container_width=True)
+            else:
+                st.info("⏳ Not enough data for correlation analysis")
 
             st.markdown("---")
 
